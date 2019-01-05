@@ -1,0 +1,67 @@
+.MenuItemWrapper {
+    display: flex;
+}
+
+.MenuItemIcon {
+    color: var(--category--color);
+}
+
+.MenuItemName {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 8px;
+}
+
+
+.dialog .appBar {
+
+    position: relative;
+    background-color: var(--category--color);
+    padding-left: 10%;
+    padding-right: 10%;
+    display: flex;
+}
+
+.toolBar {
+    justify-content: space-between;
+}
+
+.list {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonWrapper {
+    display: flex;
+    /* background-color: yellow; */
+}
+
+.amountInpWrapper {
+    display: flex;
+    /* background-color: purple; */
+    min-width: 20px;
+    
+
+}
+
+.listWrapper {
+    margin-left: 0%;
+    margin-right: 18%;
+}
+
+@media (min-width: 320px) {
+    .listWrapper {
+        margin-left: -3%;
+        margin-right: 10%;
+    }
+
+    .dialog .appBar {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media (min-width: 600px) {
+    
+
+}

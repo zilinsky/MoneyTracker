@@ -1,0 +1,17 @@
+.Main {
+    display: flex;
+    justify-content: center;
+    background-color: yellow;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.CurrentDate {
+    margin: 0;
+    width: 280px;
+    font-size: 1em;
+}
+
+.test {
+   display: flex;
+}

@@ -1,0 +1,30 @@
+.Main {
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+}
+
+.Content {
+    margin: auto;  /* Magic! */
+    background-color: #FAFAFA;
+    width: 80%;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 1.8em;
+    color: #616161;
+}
+
+.Test {
+    background-color: red;
+}
+
+p {
+    text-align: center;
+    width: 100%;
+    font-size: 0.8em;
+}
+
+.label {
+    color: white;
+}

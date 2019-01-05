@@ -1,0 +1,12 @@
+.Box {
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    background-color: gray;
+    color: white;
+}
+
+.Icon {
+    margin-top: auto;
+    margin-bottom: auto;
+}

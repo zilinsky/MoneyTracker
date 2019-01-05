@@ -1,0 +1,19 @@
+.container .textField {
+    margin-top: 12px;
+    margin-bottom: 20px;
+    width: 209px;
+}
+
+.container .textField > div {
+    height: 63px;
+}
+
+.container .icon {
+    font-size: 40px;
+    margin-top: 23px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 19px;
+    color: var(--category--color);
+}

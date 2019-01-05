@@ -1,0 +1,26 @@
+.numberFormatStyle {
+    font-weight: 400;
+    font-size: 18px;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    background-color: transparent;
+    color: white;
+    direction: rtl;
+    border-width: 0px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.numberFormatStyle:focus {
+    border-width: 0px;
+    background-color: transparent;
+   
+}
+
+*:focus {
+    outline: none;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 0.3; /* Firefox */
+}
