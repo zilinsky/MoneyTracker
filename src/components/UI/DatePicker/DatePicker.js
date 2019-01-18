@@ -5,20 +5,15 @@ import TextField from '@material-ui/core/TextField';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import moment from 'moment';
 
-
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
 
 class DatePicker extends React.Component {
 
-  state = {
-    value: moment().format("YYYY-MM-DD")
+  handleTextChange(event) {
+    this.props.onSetCurrItemDate(event.target.value);
   }
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  };
 
   render() {
       const theme = createMuiTheme({
@@ -31,7 +26,7 @@ class DatePicker extends React.Component {
       })
 
       
-      let month = 1 + moment(this.state.value, 'YYYY-MM-DD').month(); 
+      let month = 1 + moment(this.props.currItemDate, 'YYYY-MM-DD').month(); 
       //let day   = this.state.value.format('D');
       //let year  = this.state.value.format('YYYY');
       console.log("month:" + month);
@@ -46,8 +41,8 @@ class DatePicker extends React.Component {
             id="date"
             label="Date"
             type="date"
-            value={this.state.value}
-            onChange={this.handleChange('value')}
+            value={this.props.currItemDate}
+            onChange={event => this.handleTextChange(event)}
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
@@ -60,4 +55,16 @@ class DatePicker extends React.Component {
   }
 }
 
-export default DatePicker;
+const mapStateToProps = state => {
+  return {
+    currItemDate: state.currItemDate
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+      onSetCurrItemDate: (date) => dispatch(actions.setCurrItemDate(date))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DatePicker);

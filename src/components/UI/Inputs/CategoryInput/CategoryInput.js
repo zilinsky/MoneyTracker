@@ -4,6 +4,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 
+import { connect } from 'react-redux';
+import * as actions from '../../../../store/actions/index';
 
 class CategoryInput extends React.Component {
     
@@ -14,9 +16,7 @@ class CategoryInput extends React.Component {
      }; 
 
     handleChange = name => event => {
-      this.setState({
-        [name]: event.target.value,
-      });
+      this.props.onetCurrItemCategory(event.target.value);
       name = event.target.value;
       this.props.onSelectcolor(name);
     };
@@ -53,8 +53,8 @@ class CategoryInput extends React.Component {
                     select
                     label="Please select a category"
                     className={classes.textField}
-                    value={this.state.value}
-                    onChange={this.handleChange('value')}
+                    value={this.props.currItemCategory}
+                    onChange={this.handleChange('currItemCategory')}
                     margin="normal"
                     variant="outlined"
                     InputLabelProps={this.submitHandler}
@@ -67,4 +67,16 @@ class CategoryInput extends React.Component {
     }
 }
 
-export default CategoryInput;
+const mapStateToProps = state => {
+    return {
+        currItemCategory: state.currItemCategory
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onetCurrItemCategory: (category) => dispatch(actions.setCurrItemCategory(category))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryInput);

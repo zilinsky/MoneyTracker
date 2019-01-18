@@ -4,31 +4,60 @@ import TextField from '@material-ui/core/TextField';
 import CreateOutlined from '@material-ui/icons/CreateOutlined';
 import classes from '../style.css';
 
-const commentInput = (props) => {
+import { connect } from 'react-redux';
+import * as actions from '../../../../store/actions/index';
 
-    const theme = createMuiTheme({
-        palette: {
-            primary: {
-                main: props.categoriesColor,
+class CommentInput extends React.Component {
+
+    state = {
+        name: '',
+
+    };
+
+    handleTextChange(event) {
+        this.props.onSetCurrItemComment(event.target.value);
+    }
+
+    render() {
+
+        const theme = createMuiTheme({
+            palette: {
+                primary: {
+                    main: this.props.categoriesColor,
+                },
             },
-        },
-    })
+        })
 
-    return (
-        <div className={classes.container}>
-            <CreateOutlined className={classes.icon} style={{'--category--color': props.categoriesColor}}/>
-            <MuiThemeProvider theme={theme}>
-                <TextField 
-                    id="outlined-dense"
-                    label="Write a note here..."
-                    margin="dense"
-                    variant="outlined"
-                    className={classes.textField}
-                />
-            </MuiThemeProvider>
-        </div>
-    );
+
+        return (
+            <div className={classes.container}>
+                <CreateOutlined className={classes.icon} style={{ '--category--color': this.props.categoriesColor }} />
+                <MuiThemeProvider theme={theme}>
+                    <TextField
+                        id="outlined-dense"
+                        label="Write a note here..."
+                        margin="dense"
+                        variant="outlined"
+                        className={classes.textField}
+                        value={this.props.currItemComment}
+                        onChange={event => this.handleTextChange(event)}
+                    />
+                </MuiThemeProvider>
+            </div>
+        );
+    };
+}
+
+const mapStateToProps = state => {
+    return {
+        currItemComment: state.currItemComment
+    };
 };
 
-  
-export default commentInput;
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetCurrItemComment: (comment) => dispatch(actions.setCurrItemComment(comment))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentInput);

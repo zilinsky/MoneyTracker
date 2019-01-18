@@ -1,9 +1,9 @@
 import React from 'react';
-//import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import TextField from '@material-ui/core/TextField';
 import classes from './AmountInput.css';
 import NumberFormat from 'react-number-format';
+
+import { connect } from 'react-redux';
+import * as actions from '../../../../store/actions/index';
 
 
 
@@ -12,13 +12,10 @@ class AmountInput extends React.Component {
     state = {
         amount: '0'
     }
-
-    /* NumberFormat value={this.state.profit} thousandSeparator={true} prefix={'$'} onValueChange={(values) => {
-        const {formattedValue, value} = values;
-        // formattedValue = $2,223
-        // value ie, 2223
-        this.setState({profit: formattedValue})
-      }}/> */
+    
+    handleTextChange(val) {
+        this.props.onSetCurrItemAmount(val);
+    }
 
     render() {
         console.log("amount " + this.state.amount);
@@ -28,10 +25,7 @@ class AmountInput extends React.Component {
                         thousandSeparator={true} 
                         prefix={this.props.currencyType} 
                         className={classes.numberFormatStyle}
-                        onValueChange={(values) => {
-                            const {formattedValue, value} = values;
-                            this.setState({amount: formattedValue})
-                        }}
+                        onValueChange={values => this.handleTextChange(values)}
                         placeholder="HUF 0"
                 >
                 </NumberFormat>
@@ -40,5 +34,17 @@ class AmountInput extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        currItemAmount: state.currItemAmount
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onSetCurrItemAmount: (amount) => dispatch(actions.setCurrItemAmount(amount))
+    }
+}
+
   
-export default AmountInput;
+export default connect(mapStateToProps, mapDispatchToProps)(AmountInput);
