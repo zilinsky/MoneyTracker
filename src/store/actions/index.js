@@ -1,4 +1,5 @@
 export {
+    addItem,
     initCategories,
     setCurrItemComment,
     setCurrItemAmount,

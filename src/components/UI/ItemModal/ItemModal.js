@@ -19,7 +19,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import moment from 'moment';
 
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions/index';
+import * as actionCreators from '../../../store/actions/index';
+
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -54,6 +55,8 @@ class ItemModal extends React.Component {
 
   handleAdd = () => {
     this.setState({ open: false });
+    this.props.onAddItem( this.props.currCategory, this.props.currItemComment, 
+      this.props.currItemAmount.formattedValue , this.props.currItemDate);
     this.props.onClearCurrVariables();
     console.log("HandleAdd");
   };
@@ -78,6 +81,7 @@ class ItemModal extends React.Component {
     let categoriesVar;
     let returnColorObj;
     let returnColorVar;
+    let isDisabled = true;
 
     if ( this.props.categories ) {
         categoriesVar =  (this.props.categories.map(cat => (
@@ -102,6 +106,10 @@ class ItemModal extends React.Component {
       returnColorVar = '#3f51b5'
     }
 
+    if(this.props.currItemComment && this.props.currItemAmount.floatValue && this.props.currCategory && this.props.currItemDate) {
+      isDisabled = false;
+    }
+
     return (
       <div>
         <AddButton clicked={this.handleClickOpen}></AddButton>
@@ -118,7 +126,7 @@ class ItemModal extends React.Component {
                   <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
                     <CloseIcon />
                   </IconButton>
-                  <Button color="inherit" onClick={this.handleAdd}>Add</Button>
+                  <Button disabled={isDisabled} color="inherit" onClick={this.handleAdd}>Add</Button>
                 </div>
                 <div className={classes.amountInpWrapper}>
                   <AmountInput 
@@ -144,17 +152,23 @@ class ItemModal extends React.Component {
 const mapStateToProps = state => {
   return {
     categories: state.categories,
+    currItemComment: state.currItemComment,
+    currItemAmount: state.currItemAmount,
+    currCategory: state.currItemCategory,
+    currItemDate: state.currItemDate
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onInitCategories: () => dispatch(actions.initCategories()),
-    onSetCurrItemComment: (comment) => dispatch(actions.setCurrItemComment(comment)),
-    onSetCurrItemAmount: (amount) => dispatch(actions.setCurrItemAmount(amount)),
-    onetCurrItemCategory: (category) => dispatch(actions.setCurrItemCategory(category)),
-    onSetCurrItemDate: (date) => dispatch(actions.setCurrItemDate(date)),
-    onClearCurrVariables: () => dispatch(actions.clearCurrVariables())
+    //onAddItem: (category, comment, amount, date) => dispatch({type: actionCreators.ADD_ITEM, item: {category: category, comment: comment, amount: amount, date: date}}),
+    onAddItem: ( category, comment, amount, date ) => dispatch(actionCreators.addItem(category, comment, amount, date)),
+    onInitCategories: () => dispatch(actionCreators.initCategories()),
+    onSetCurrItemComment: (comment) => dispatch(actionCreators.setCurrItemComment(comment)),
+    onSetCurrItemAmount: (amount) => dispatch(actionCreators.setCurrItemAmount(amount)),
+    onetCurrItemCategory: (category) => dispatch(actionCreators.setCurrItemCategory(category)),
+    onSetCurrItemDate: (date) => dispatch(actionCreators.setCurrItemDate(date)),
+    onClearCurrVariables: () => dispatch(actionCreators.clearCurrVariables())
   }
 }
 

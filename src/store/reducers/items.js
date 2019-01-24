@@ -3,20 +3,21 @@ import moment from 'moment';
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-    items: [
+    // items: [
            
-        {id: 1, icon: 'add_circle', categoryName: 'Circle', comment: 'TestComment1', amount: 91, date: '2018-12-31'},
-        {id: 2, icon: 'face', categoryName: 'Faceeee', comment: 'TestComment2', amount: 92, date: '2018-11-20'},
-        {id: 3, icon: 'alarm', categoryName: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-11-20'},
-        {id: 4, icon: 'commute', categoryName: 'Alarm', comment: 'TestComment3', amount: 93, date: '2019-01-01'},
-        {id: 5, icon: 'done', categoryName: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-12-01'},
-        {id: 6, icon: 'launch', categoryName: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-10-20'}
+    //     {id: 1, icon: 'add_circle', category: 'Circle', comment: 'TestComment1', amount: 91, date: '2018-12-31'},
+    //     {id: 2, icon: 'face', category: 'Faceeee', comment: 'TestComment2', amount: 92, date: '2018-11-20'},
+    //     {id: 3, icon: 'alarm', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-11-20'},
+    //     {id: 4, icon: 'commute', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2019-01-01'},
+    //     {id: 5, icon: 'done', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-12-01'},
+    //     {id: 6, icon: 'launch', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-10-20'}
     
-    ],
+    // ],
+    items: [],
     /* currentItem: {id: null, icon: null, categoryName: null, comment: null, amount: null, date: null}, */
+    currItemCategory: '',
     currItemComment: '',
     currItemAmount: '',
-    currItemCategory: '',
     currItemDate: moment().format("YYYY-MM-DD"),
     categories: null,
     error: false
@@ -27,11 +28,10 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.ADD_ITEM:
             const newItem = {
                 id: Math.random(), // not really unique but good enough here!
-                icon: action.itemsData.icon,
-                categoryName: action.itemsData.categoryName,
-                comment: action.itemsData.comment,
-                amount: action.itemsData.amount,
-                date: action.itemsData.date
+                category: action.category,
+                comment: action.comment,
+                amount: action.amount,
+                date: action.date
             };
             return {
                 ...state,

@@ -31,8 +31,7 @@ class MoneyTracker extends Component {
                         return <div>{(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
                             <div><Items
                                 key={item.id}
-                                icon={item.icon}
-                                categoryName={item.categoryName}
+                                icon={item.category}
                                 comment={item.comment}
                                 amount={item.amount}
                                 date={item.date}

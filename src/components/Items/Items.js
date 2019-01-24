@@ -9,7 +9,7 @@ const Items = (props) => {
     return (
        <div className={classes.Box}>
             <Icon>{props.icon}</Icon>
-            <p>{props.categoryName}</p>
+            <p>{props.category}</p>
             <p>{props.comment}</p>
             <p>{props.amount}</p>
             <p>{props.date}</p>

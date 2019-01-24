@@ -1,6 +1,18 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-categories';
 
+
+export const addItem = ( category, comment, amount, date) => {
+    return {
+        type: actionTypes.ADD_ITEM,
+        category: category,
+        comment: comment,
+        amount: amount,
+        date: date
+
+    };
+};
+
 //synch
 export const setCategories = ( categories ) => {
     return {
@@ -95,7 +107,7 @@ export const addStart = () => {
     };
 };
 
-export const addItem = ( itemData ) => {
+export const addItemTEMP = ( itemData ) => {
     return dispatch => {
         dispatch( addStart() );
         axios.post( '/items.json', itemData )
