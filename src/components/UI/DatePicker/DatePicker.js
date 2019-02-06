@@ -12,6 +12,8 @@ import * as actions from '../../../store/actions/index';
 class DatePicker extends React.Component {
 
   handleTextChange(event) {
+    console.log("event.target.value: ");
+    console.log(event.target.value);
     this.props.onSetCurrItemDate(event.target.value);
   }
 

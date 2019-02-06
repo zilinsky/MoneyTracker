@@ -1,6 +1,9 @@
 /* eslint-disable default-case */
 import moment from 'moment';
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility';
+//package for unique keys
+let uniqid = require('uniqid');
 
 const initialState = {
     // items: [
@@ -20,14 +23,30 @@ const initialState = {
     currItemAmount: '',
     currItemDate: moment().format("YYYY-MM-DD"),
     categories: null,
-    error: false
+    error: false,
+    loading: false
+};
+
+const fetchItemsStart = ( state, action ) => {
+    return updateObject( state, { loading: true } );
+};
+
+const fetchItemsSuccess = ( state, action ) => {
+    return updateObject( state, {
+        items: action.items,
+        loading: false
+    } );
+};
+
+const fetchItemsFail = ( state, action ) => {
+    return updateObject( state, { loading: false } );
 };
 
 const reducer = ( state = initialState, action ) => {
     switch ( action.type ) {
         case actionTypes.ADD_ITEM:
             const newItem = {
-                id: Math.random(), // not really unique but good enough here!
+                key: uniqid(),
                 category: action.category,
                 comment: action.comment,
                 amount: action.amount,
@@ -40,7 +59,7 @@ const reducer = ( state = initialState, action ) => {
         case actionTypes.DELETE_ITEM:
             return {
                 ...state,
-                items: state.items.filter(item => item.id !== action.itemId)
+                items: state.items.filter(item => item.key !== action.itemId)
             };
         case actionTypes.SET_CATEGORIES:
             return {
@@ -80,6 +99,9 @@ const reducer = ( state = initialState, action ) => {
             currItemCategory: '',
             currItemDate: ''
         };
+        case actionTypes.FETCH_ITEMS_START: return fetchItemsStart( state, action );
+        case actionTypes.FETCH_ITEMS_SUCCESS: return fetchItemsSuccess( state, action );
+        case actionTypes.FETCH_ITEMS_FAIL: return fetchItemsFail( state, action );
     }
     return state;
 };

@@ -35,6 +35,8 @@ class ItemModal extends React.Component {
       currencyType:"HUF "
   };
 
+
+
   componentDidMount() {
     //console.log("CategoryInput.js componentDidMount");
     this.props.onInitCategories();
@@ -55,8 +57,17 @@ class ItemModal extends React.Component {
 
   handleAdd = () => {
     this.setState({ open: false });
-    this.props.onAddItem( this.props.currCategory, this.props.currItemComment, 
-      this.props.currItemAmount.formattedValue , this.props.currItemDate);
+    const item = {
+        category: this.props.currCategory,
+        comment: this.props.currItemComment,
+        amount: this.props.currItemAmount.formattedValue,
+        date: this.props.currItemDate
+
+    }
+
+    this.props.onAddItemDB(item);
+
+    //this.props.onFetchItems();
     this.props.onClearCurrVariables();
     console.log("HandleAdd");
   };
@@ -168,7 +179,9 @@ const mapDispatchToProps = dispatch => {
     onSetCurrItemAmount: (amount) => dispatch(actionCreators.setCurrItemAmount(amount)),
     onetCurrItemCategory: (category) => dispatch(actionCreators.setCurrItemCategory(category)),
     onSetCurrItemDate: (date) => dispatch(actionCreators.setCurrItemDate(date)),
-    onClearCurrVariables: () => dispatch(actionCreators.clearCurrVariables())
+    onClearCurrVariables: () => dispatch(actionCreators.clearCurrVariables()),
+    onAddItemDB: (itemData) => dispatch(actionCreators.addItemDB(itemData)),
+    onFetchItems: () => dispatch( actionCreators.fetchItems())
   }
 }
 

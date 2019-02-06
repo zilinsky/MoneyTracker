@@ -6,13 +6,21 @@ import ItemModal from '../../components/UI/ItemModal/ItemModal';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import moment from 'moment';
-
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as actionCreators from '../../store/actions/index'
 import { connect } from 'react-redux';
+
+
+//package for unique keys
+let uniqid = require('uniqid');
+
 
 class MoneyTracker extends Component {
     state = {
         currentDate: new Date()
+    }
+
+    componentDidMount () {
+        this.props.onFetchItems();
     }
 
     getCurrentDateFromChild = (value) => {
@@ -24,19 +32,23 @@ class MoneyTracker extends Component {
         let currentYears = this.state.currentDate.getFullYear();
 
         let items = <p>For this Month you don't have any items</p>
+
+        console.log("this.props.tms");
+        console.log(this.props.tms);
+
         if (this.props.tms) {
             items = (
                 <div>
-                    {this.props.tms.map((item) => {
-                        return <div>{(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
+                    {this.props.tms.map((item, index) => {
+                        return <div key={uniqid()}>{(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
                             <div><Items
-                                key={item.id}
                                 icon={item.category}
                                 comment={item.comment}
                                 amount={item.amount}
                                 date={item.date}
+                                
                             />
-                                <IconButton color="inherit" onClick={() => this.props.onRemovedItem(item.id)} aria-label="Close">
+                                <IconButton color="inherit" onClick={() => this.props.onDeleteItems(item.id)} aria-label="Close">
                                     <CloseIcon />
                                 </IconButton>
                             </div>) : null}
@@ -52,6 +64,9 @@ class MoneyTracker extends Component {
                     <MonthsCalendar getCurrentDate={this.getCurrentDateFromChild} currentDate={this.state.currentDate} />
                     {items}
                     <ItemModal></ItemModal>
+                    {/* <Button onClick={() => this.getID(testvar)} variant="contained" className={classes.button}>
+                        Default
+                    </Button> */}
                 </div>
             </main>
         );
@@ -66,7 +81,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRemovedItem: (id) => dispatch({ type: actionTypes.DELETE_ITEM, itemId: id })
+        onFetchItems: () => dispatch( actionCreators.fetchItems() ),
+        onDeleteItems: (id) => dispatch( actionCreators.deleteItems(id) )
     }
 };
 

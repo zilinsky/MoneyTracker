@@ -13,3 +13,7 @@ export const CLEAR_CURR_ITEM_VARS = 'CLEAR_CURR_ITEM_VARS';
 export const ADD_SUCCESS = 'ADD_SUCCESS';
 export const ADD_FAIL = 'ADD_FAIL';
 export const ADD_START = 'ADD_START';
+
+export const FETCH_ITEMS_START = 'FETCH_ITEMS_START';
+export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
+export const FETCH_ITEMS_FAIL = 'FETCH_ITEMS_FAIL';

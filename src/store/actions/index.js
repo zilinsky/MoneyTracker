@@ -5,5 +5,8 @@ export {
     setCurrItemAmount,
     setCurrItemCategory,
     setCurrItemDate,
-    clearCurrVariables
+    clearCurrVariables,
+    addItemDB,
+    fetchItems,
+    deleteItems
 } from './items';
