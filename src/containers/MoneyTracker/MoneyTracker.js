@@ -41,23 +41,42 @@ class MoneyTracker extends Component {
     render() {
         let currentMonths = this.state.currentDate.getMonth();
         let currentYears = this.state.currentDate.getFullYear();
-
-        const arr = [0,1,2,3];
-        let i=1;
+        const arr = [];
+        const arr2 = [];
+        let temp;
+        let a = 0;
 
         let items = <p>For this Month you don't have any items</p>
-
+       
         if (this.props.tms !== 'undefined') {
+            //DatePanel logic
+            for (let i = 0; i < this.props.tms.length; ++i) {
+                if (temp !== this.props.tms[i].date) {
+                    arr.push(i);
+                    a=0;
+                    arr2[i] = this.props.tms[i].amount.floatValue;
+                }
+                else {
+                    a++;
+                    arr2[i-a] = this.props.tms[i].amount.floatValue + arr2[i-a];
+
+                }
+                temp = this.props.tms[i].date;
+            }
+            console.log("arr: " + arr);
+            console.log("arr2: " + arr2);
+
             items = (
                 <div>
                     {this.props.tms.map((item, index) => {
                         return <div onClick={() => this.editItem(item.id, item)}
-                                    className={classes.Test}
                                     key={uniqid()}
                                 >   {(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
                                     <div>
-                                     { (arr.includes(index)) ? <div>{item.date}</div> : null}
-                                        
+                                      { (arr.includes(index)) ? 
+                                        <div className={classes.DatePanel}><p>{moment(item.date, 'YYYY-MM-DD').format("MMM DD YYYY")}</p><p>HUF {arr2[index]}</p></div> 
+                                        : null}
+                                         
                                         <Items
                                             icon={item.category}
                                             name={item.name}
@@ -72,7 +91,6 @@ class MoneyTracker extends Component {
                     })}
                 </div>
             );
-            console.log(this.props.tms);
         }
 
         return (

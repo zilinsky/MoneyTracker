@@ -6,7 +6,8 @@
     background-color: white;
     color: black;
     /*border: 1px solid gray;*/
-    height: 87px;
+    height: 81px;
+    justify-content: space-between;
 }
 
 .OuterBox {
@@ -25,6 +26,7 @@
     line-height:100px;
     text-align:center;
     background:#000;
+    flex: 2;
 }
 
 .Circle .Icon {
@@ -35,7 +37,9 @@
 }
 
 .Item p {
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
 }
 
 .NameBox{
@@ -43,6 +47,7 @@
     margin-left: 16px;
     margin-right: 0px;
     width: 139px;
+    flex:2;
 }
 
 .Name {
@@ -61,3 +66,11 @@
     color: gray;
 }
 
+.Date {
+    font-size: 10px;
+}
+
+.Amount {
+    text-align: right;
+    
+}
