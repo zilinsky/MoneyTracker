@@ -8,31 +8,21 @@ import { connect } from 'react-redux';
 import * as actions from '../../../../store/actions/index';
 
 class CategoryInput extends React.Component {
-    
-    state = {
-         value: 'default',
-         categories: [],
-         loading: true
-     }; 
 
-    handleChange = name => event => {
-      this.props.onetCurrItemCategory(event.target.value);
-      name = event.target.value;
-      this.props.onSelectcolor(name);
+    state = {
+        value: 'default',
+        categories: [],
+        loading: true
     };
 
-    /* returnColor = (obj, val) => {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if(obj[key].id === val) {
-                    return obj[key].color;
-                }
-                
-            }
-        }
-    } */
+    handleChange = name => event => {
+        this.props.onSetCurrItemCategory(event.target.value);
+        name = event.target.value;
+        this.props.onSelectcolor(name);
+        this.props.onSetCurrItemCategoryName(this.props.categories[name].Name);
+        this.props.onSetCurrItemCategoryColor(this.props.categories[name].Color)
+    };
 
-    
 
     render() {
 
@@ -46,21 +36,20 @@ class CategoryInput extends React.Component {
 
         return (
             <div className={classes.container}>
-                <HelpOutline className={classes.icon} style={{'--category--color': this.props.categoriesColor}}/>
+                <HelpOutline className={classes.icon} style={{ '--category--color': this.props.categoriesColor }} />
                 <MuiThemeProvider theme={theme}>
-                <TextField 
-                    id="outlined-select-value"
-                    select
-                    label="Please select a category"
-                    className={classes.textField}
-                    value={this.props.currItemCategory}
-                    onChange={this.handleChange('currItemCategory')}
-                    margin="normal"
-                    variant="outlined"
-                    InputLabelProps={this.submitHandler}
-                >
-                {this.props.categoriesVar} 
-                </TextField>
+                    <TextField
+                        id="outlined-select-value"
+                        select
+                        label="Please select a category"
+                        className={classes.textField}
+                        value={this.props.currItemCategory}
+                        onChange={this.handleChange('currItemCategory')}
+                        margin="normal"
+                        variant="outlined"
+                    >
+                        {this.props.categoriesVar}
+                    </TextField>
                 </MuiThemeProvider>
             </div>
         );
@@ -69,14 +58,17 @@ class CategoryInput extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        currItemCategory: state.currItemCategory
+        currItemCategory: state.currItemCategory,
+        categories: state.categories,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onetCurrItemCategory: (category) => dispatch(actions.setCurrItemCategory(category))
+        onSetCurrItemCategory: (category) => dispatch(actions.setCurrItemCategory(category)),
+        onSetCurrItemCategoryName: (name) => dispatch(actions.setCurrItemCategoryName(name)),
+        onSetCurrItemCategoryColor: (color) => dispatch(actions.setCurrItemCategoryColor(color))
     }
-  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryInput);

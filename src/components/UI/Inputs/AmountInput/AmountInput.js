@@ -18,7 +18,6 @@ class AmountInput extends React.Component {
     }
 
     render() {
-        console.log("amount " + this.state.amount);
         return (
             <div className={classes.container}>
                 <NumberFormat 
@@ -27,6 +26,8 @@ class AmountInput extends React.Component {
                         className={classes.numberFormatStyle}
                         onValueChange={values => this.handleTextChange(values)}
                         placeholder="HUF 0"
+                        //isNumericString={true}
+                        value={this.props.currItemAmount.floatValue}
                 >
                 </NumberFormat>
             </div>

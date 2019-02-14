@@ -1,12 +1,63 @@
-.Box {
+.Item {
     display: flex;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    background-color: gray;
-    color: white;
+    font-size: 20px;
+    background-color: white;
+    color: black;
+    /*border: 1px solid gray;*/
+    height: 87px;
 }
 
-.Icon {
+.OuterBox {
+    display: flex;
+}
+
+.Circle {
+    margin-left: 5px;
     margin-top: auto;
     margin-bottom: auto;
+    width:70px;
+    height:70px;
+    border-radius:50px;
+    font-size:0px;
+    color:#fff;
+    line-height:100px;
+    text-align:center;
+    background:#000;
 }
+
+.Circle .Icon {
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 29px;
+}
+
+.Item p {
+    margin: auto;
+}
+
+.NameBox{
+    margin: auto;
+    margin-left: 16px;
+    margin-right: 0px;
+    width: 139px;
+}
+
+.Name {
+    margin: 0px;
+    text-align: left;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+
+.Comment {
+    font-size: 14px; 
+    margin-left: 0px;
+    padding-top: 4px;
+    text-align: left;
+    color: gray;
+}
+

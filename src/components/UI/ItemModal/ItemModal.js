@@ -13,6 +13,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Slide from '@material-ui/core/Slide';
 import Icon from '@material-ui/core/Icon';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -27,12 +28,11 @@ function Transition(props) {
 }
 
 class ItemModal extends React.Component {
-  
+
   state = {
-      open: false,
-      loading: true,
-      color: '',
-      currencyType:"HUF "
+    loading: true,
+    color: '',
+    currencyType: "HUF "
   };
 
 
@@ -43,121 +43,164 @@ class ItemModal extends React.Component {
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true });
-    this.setState({color: 'default'});
+    this.props.onSetModalStatus(true, 'add');
+    this.setState({ color: 'default' });
     this.props.onSetCurrItemDate(moment().format("YYYY-MM-DD"));
   };
 
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.props.onSetModalStatus(false, '');
     this.props.onClearCurrVariables();
     console.log("HandleClose");
   };
 
   handleAdd = () => {
-    this.setState({ open: false });
+    this.props.onSetModalStatus(false, '');
     const item = {
-        category: this.props.currCategory,
-        comment: this.props.currItemComment,
-        amount: this.props.currItemAmount.formattedValue,
-        date: this.props.currItemDate
+      category: this.props.currCategory,
+      comment: this.props.currItemComment,
+      amount: this.props.currItemAmount,
+      date: this.props.currItemDate,
+      name: this.props.currItemCategoryName,
+      color: this.props.currItemCategoryColor,
 
     }
-
+    console.log("item from handleADD");
+    console.log(item);
     this.props.onAddItemDB(item);
-
-    //this.props.onFetchItems();
     this.props.onClearCurrVariables();
     console.log("HandleAdd");
   };
 
+  handleEdit = () => {
+    this.props.onSetModalStatus(false, '');
+
+
+    const item = {
+      category: this.props.currCategory,
+      comment: this.props.currItemComment,
+      amount: this.props.currItemAmount,
+      date: this.props.currItemDate,
+      name: this.props.currItemCategoryName,
+      color: this.props.currItemCategoryColor,
+
+    }
+    this.props.onEditItems(this.props.currItemID, item);
+    this.props.onClearCurrVariables();
+    console.log("HandleEdit");
+  }
+
+  handleDeleteItem = () => {
+    this.props.onDeleteItems(this.props.currItemID);
+    this.props.onClearCurrVariables();
+    this.props.onSetModalStatus(false, '');
+  }
+
   getColorFromChild = (colorValue) => {
-    this.setState({color: colorValue});
+    this.setState({ color: colorValue });
   };
 
   returnColor = (obj, val) => {
-        for (var key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                if(obj[key].id === val) {
-                    return obj[key].color;
-                }
-                
-            }
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        if (obj[key].id === val) {
+          return obj[key].color;
         }
+
+      }
+    }
   }
- 
+
   render() {
 
     let categoriesVar;
-    let returnColorObj;
-    let returnColorVar;
+    let returnColorVar = '#3f51b5';
     let isDisabled = true;
+    let button;
+    let deleteButton;
+    const fetchedCategories = [];
 
-    if ( this.props.categories ) {
-        categoriesVar =  (this.props.categories.map(cat => (
-                   <MenuItem  key={cat.id} value={cat.id}>
-                       <div className={classes.MenuItemWrapper}>
-                           <Icon className={classes.MenuItemIcon} style={{'--category--color':  cat.Color}}>{cat.id}}</Icon>
-                           <span className={classes.MenuItemName}>{cat.Name}</span>
-                       </div>
-                   </MenuItem>))
-        )
-        returnColorObj = this.props.categories.map((val, i) => {
-            return {
-                id: val.id,
-                color: val.Color
-            };
+    if (this.props.categories) {
+      for (let key in this.props.categories) {
+        fetchedCategories.push({
+          ...this.props.categories[key],
+          id: key
         });
+      }
+
+      categoriesVar = (fetchedCategories.map(cat => (
+        <MenuItem key={cat.id} value={cat.id}>
+          <div className={classes.MenuItemWrapper}>
+            <Icon className={classes.MenuItemIcon} style={{ '--category--color': cat.Color }}>{cat.id}}</Icon>
+            <span className={classes.MenuItemName}>{cat.Name}</span>
+          </div>
+        </MenuItem>))
+      )
     }
 
-    returnColorVar = this.returnColor(returnColorObj,this.state.color);
 
-    if(typeof returnColorVar === 'undefined') {
+    if ( this.props.currItemCategoryColor ) {
+      returnColorVar = this.props.currItemCategoryColor;
+    }
+
+    if (typeof returnColorVar === 'undefined') {
       returnColorVar = '#3f51b5'
     }
 
-    if(this.props.currItemComment && this.props.currItemAmount.floatValue && this.props.currCategory && this.props.currItemDate) {
+    if (this.props.currItemComment && this.props.currItemAmount.floatValue && this.props.currCategory && this.props.currItemDate) {
       isDisabled = false;
+    }
+
+    if (this.props.modalType === "edit") {
+      button = <Button disabled={isDisabled} color="inherit" onClick={this.handleEdit}>Save</Button>
+      deleteButton =
+        <IconButton color="inherit" onClick={this.handleDeleteItem} aria-label="Close">
+          <DeleteIcon />
+        </IconButton>
+    }
+    if (this.props.modalType === "add") {
+      button = <Button disabled={isDisabled} color="inherit" onClick={this.handleAdd}>Add</Button>
     }
 
     return (
       <div>
         <AddButton clicked={this.handleClickOpen}></AddButton>
         <Dialog
-          style={{'--category--color': returnColorVar}}
+          style={{ '--category--color': returnColorVar }}
           className={classes.dialog}
           fullScreen
-          open={this.state.open}
+          open={this.props.open}
           onClose={this.handleClose}
           TransitionComponent={Transition}>
-            <AppBar className={classes.appBar}>
-              <Toolbar className={classes.toolBar}>
-                <div className={classes.buttonWrapper}>
-                  <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
-                    <CloseIcon />
-                  </IconButton>
-                  <Button disabled={isDisabled} color="inherit" onClick={this.handleAdd}>Add</Button>
-                </div>
-                <div className={classes.amountInpWrapper}>
-                  <AmountInput 
-                                currencyType ={this.state.currencyType}>
-                  </AmountInput>
-                </div>
-              </Toolbar>
-            </AppBar>
+          <AppBar className={classes.appBar}>
+            <Toolbar className={classes.toolBar}>
+              <div className={classes.buttonWrapper}>
+                <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                  <CloseIcon />
+                </IconButton>
+                {deleteButton}
+                {button}
+              </div>
+              <div className={classes.amountInpWrapper}>
+                <AmountInput
+                  currencyType={this.state.currencyType}>
+                </AmountInput>
+              </div>
+            </Toolbar>
+          </AppBar>
           <List className={classes.list}>
             <div className={classes.listWrapper}>
               <CategoryInput onSelectcolor={this.getColorFromChild} categoriesVar={categoriesVar} categoriesColor={returnColorVar}></CategoryInput>
               <CommentInput categoriesColor={returnColorVar}></CommentInput>
               <DatePicker categoriesColor={returnColorVar}></DatePicker>
-            </div>   
+            </div>
           </List>
           <Divider />
         </Dialog>
       </div>
     );
-  } 
+  }
 }
 
 const mapStateToProps = state => {
@@ -166,14 +209,19 @@ const mapStateToProps = state => {
     currItemComment: state.currItemComment,
     currItemAmount: state.currItemAmount,
     currCategory: state.currItemCategory,
-    currItemDate: state.currItemDate
+    currItemDate: state.currItemDate,
+    currItemCategoryName: state.currItemCategoryName,
+    currItemCategoryColor: state.currItemCategoryColor,
+    open: state.open,
+    currItemID: state.currItemID,
+    modalType: state.modalType
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     //onAddItem: (category, comment, amount, date) => dispatch({type: actionCreators.ADD_ITEM, item: {category: category, comment: comment, amount: amount, date: date}}),
-    onAddItem: ( category, comment, amount, date ) => dispatch(actionCreators.addItem(category, comment, amount, date)),
+    onAddItem: (category, comment, amount, date) => dispatch(actionCreators.addItem(category, comment, amount, date)),
     onInitCategories: () => dispatch(actionCreators.initCategories()),
     onSetCurrItemComment: (comment) => dispatch(actionCreators.setCurrItemComment(comment)),
     onSetCurrItemAmount: (amount) => dispatch(actionCreators.setCurrItemAmount(amount)),
@@ -181,9 +229,13 @@ const mapDispatchToProps = dispatch => {
     onSetCurrItemDate: (date) => dispatch(actionCreators.setCurrItemDate(date)),
     onClearCurrVariables: () => dispatch(actionCreators.clearCurrVariables()),
     onAddItemDB: (itemData) => dispatch(actionCreators.addItemDB(itemData)),
-    onFetchItems: () => dispatch( actionCreators.fetchItems())
+    onFetchItems: () => dispatch(actionCreators.fetchItems()),
+    onSetModalStatus: (open, type) => dispatch(actionCreators.setModalStatus(open, type)),
+    onEditItems: (id, item) => dispatch(actionCreators.editItems(id, item)),
+    onDeleteItems: (id) => dispatch(actionCreators.deleteItems(id)),
+
   }
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(ItemModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemModal);

@@ -1,7 +1,7 @@
 .Main {
     display: flex;
     justify-content: center;
-    background-color: yellow;
+    /*background-color: yellow;*/
     margin-top: 20px;
     margin-bottom: 20px;
 }

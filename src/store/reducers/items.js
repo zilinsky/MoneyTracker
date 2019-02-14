@@ -6,25 +6,19 @@ import { updateObject } from '../utility';
 let uniqid = require('uniqid');
 
 const initialState = {
-    // items: [
-           
-    //     {id: 1, icon: 'add_circle', category: 'Circle', comment: 'TestComment1', amount: 91, date: '2018-12-31'},
-    //     {id: 2, icon: 'face', category: 'Faceeee', comment: 'TestComment2', amount: 92, date: '2018-11-20'},
-    //     {id: 3, icon: 'alarm', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-11-20'},
-    //     {id: 4, icon: 'commute', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2019-01-01'},
-    //     {id: 5, icon: 'done', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-12-01'},
-    //     {id: 6, icon: 'launch', category: 'Alarm', comment: 'TestComment3', amount: 93, date: '2018-10-20'}
-    
-    // ],
     items: [],
-    /* currentItem: {id: null, icon: null, categoryName: null, comment: null, amount: null, date: null}, */
+    currItemID: '',
     currItemCategory: '',
     currItemComment: '',
     currItemAmount: '',
+    currItemCategoryName: '',
+    currItemCategoryColor: '',
     currItemDate: moment().format("YYYY-MM-DD"),
     categories: null,
     error: false,
-    loading: false
+    loading: false,
+    open: false,
+    modalType: ''
 };
 
 const fetchItemsStart = ( state, action ) => {
@@ -61,10 +55,15 @@ const reducer = ( state = initialState, action ) => {
                 ...state,
                 items: state.items.filter(item => item.key !== action.itemId)
             };
-        case actionTypes.SET_CATEGORIES:
+            case actionTypes.SET_CATEGORIES:
             return {
                 ...state,
                 categories: action.categories
+            };
+        case actionTypes.SET_CURR_ITEM_ID:
+            return {
+                ...state,
+                currItemID: action.currItemID
             };
         case actionTypes.FETCH_CATEGORIES_FAILED:
             return {
@@ -86,10 +85,27 @@ const reducer = ( state = initialState, action ) => {
             ...state,
             currItemCategory: action.currItemCategory
         };
+        case actionTypes.SET_CURR_ITEM_NAME_CATEGORY:
+        return {
+            ...state,
+            currItemCategoryName: action.currItemCategoryName
+        };
+        case actionTypes.SET_CURR_ITEM_NAME_COLOR:
+        return {
+            ...state,
+            currItemCategoryColor: action.currItemCategoryColor
+        };
         case actionTypes.SET_CURR_ITEM_DATE:
         return {
             ...state,
             currItemDate: action.currItemDate
+        };
+        case actionTypes.SET_MODAL_STATUS:
+        return {
+            ...state,
+            open: action.open,
+            modalType: action.modalType
+
         };
         case actionTypes.CLEAR_CURR_ITEM_VARS:
         return {
@@ -97,7 +113,9 @@ const reducer = ( state = initialState, action ) => {
             currItemComment: '',
             currItemAmount: '',
             currItemCategory: '',
-            currItemDate: ''
+            currItemDate: '',
+            currItemCategoryName: '',
+            currItemCategoryColor: ''
         };
         case actionTypes.FETCH_ITEMS_START: return fetchItemsStart( state, action );
         case actionTypes.FETCH_ITEMS_SUCCESS: return fetchItemsSuccess( state, action );

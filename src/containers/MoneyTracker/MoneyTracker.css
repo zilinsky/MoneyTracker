@@ -5,9 +5,9 @@
 }
 
 .Content {
-    margin: auto;  /* Magic! */
-    background-color: #FAFAFA;
-    width: 80%;
+    margin: 0;  /* Magic! */
+    background-color: white;
+    width: 100%;    
     text-align: center;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
@@ -21,10 +21,13 @@
 
 p {
     text-align: center;
-    width: 100%;
     font-size: 0.8em;
 }
 
 .label {
     color: white;
+}
+
+.Test {
+    background-color: red;
 }

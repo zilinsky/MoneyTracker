@@ -3,7 +3,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import classes from '../Inputs/style.css';
 import TextField from '@material-ui/core/TextField';
 import CalendarToday from '@material-ui/icons/CalendarToday';
-import moment from 'moment';
 
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
@@ -12,8 +11,6 @@ import * as actions from '../../../store/actions/index';
 class DatePicker extends React.Component {
 
   handleTextChange(event) {
-    console.log("event.target.value: ");
-    console.log(event.target.value);
     this.props.onSetCurrItemDate(event.target.value);
   }
 
@@ -27,13 +24,6 @@ class DatePicker extends React.Component {
     
       })
 
-      
-      let month = 1 + moment(this.props.currItemDate, 'YYYY-MM-DD').month(); 
-      //let day   = this.state.value.format('D');
-      //let year  = this.state.value.format('YYYY');
-      console.log("month:" + month);
-      //console.log("day:" + day);
-      //console.log("year:" + year);
 
     return (
       <form className={classes.container} noValidate>

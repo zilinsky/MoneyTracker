@@ -28,7 +28,6 @@ class MonthsCalendar extends Component {
     }
      
     render() {
-        console.log("From [MonthsCalendar]" + this.state.currentDate);
         return(
             <main className={classes.Main}>
                     <LeftButton clicked={this.leftClickHandler}/>

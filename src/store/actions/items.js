@@ -28,12 +28,42 @@ export const fetchCategoriesFailed = () => {
     };
 };
 
+export const setCurrItemID = (currItemID) => {
+    return {
+        type: actionTypes.SET_CURR_ITEM_ID,
+        currItemID: currItemID
+    };
+};
+
 export const setCurrItemComment = (currItemComment) => {
     return {
         type: actionTypes.SET_CURR_ITEM_COMMENT,
         currItemComment: currItemComment
     };
 };
+
+export const setCurrItemCategoryName = (currItemCategoryName) => {
+    return {
+        type: actionTypes.SET_CURR_ITEM_NAME_CATEGORY,
+        currItemCategoryName: currItemCategoryName
+    };
+};
+
+export const setCurrItemCategoryColor = (currItemCategoryColor) => {
+    return {
+        type: actionTypes.SET_CURR_ITEM_NAME_COLOR,
+        currItemCategoryColor: currItemCategoryColor
+    };
+};
+
+
+export const setModalStatus= (open, modalType) => {
+    return {
+        type: actionTypes.SET_MODAL_STATUS,
+        open: open,
+        modalType: modalType
+    };
+}; 
 
 export const setCurrItemAmount = (currItemAmount) => {
     return {
@@ -75,7 +105,9 @@ export const initCategories = () => {
                         id: key
                     });
                 }
-                dispatch(setCategories(fetchedCategories));
+                //console.log("res.data");
+                //console.log(res.data);
+                dispatch(setCategories(res.data));
             })
             .catch(error => {
                 dispatch(fetchCategoriesFailed());
@@ -112,15 +144,16 @@ export const addItemDBStart = () => {
 export const addItemDB = (itemData) => {
     return dispatch => {
         dispatch(addItemDBStart());
+        //POST NEW ITEM
         axios.post('/items.json', itemData)
             .then(response => {
-                dispatch(addItemDBSuccess(response.data.name, itemData));
+                //dispatch(addItemDBSuccess(response.data.name, itemData));
                 dispatch(fetchItems());
-                dispatch(fetchItemsWithSort());
             })
             .catch(error => {
                 dispatch(addItemDBFail(error));
             });
+
     };
 };
 
@@ -160,6 +193,11 @@ export const fetchItems = () => {
                         id: key
                     });
                 }
+                fetchedItems.sort(function (a, b) {
+                    // Turn your strings into dates, and then subtract them
+                    // to get a value that is either negative, positive, or zero.
+                    return new Date(b.date) - new Date(a.date);
+                });
                 dispatch(fetchItemsSuccess(fetchedItems));
             })
             .catch(err => {
@@ -167,41 +205,6 @@ export const fetchItems = () => {
             });
     };
 
-};
-
-//aka fetchOrders
-export const fetchItemsWithSort = () => {
-    return dispatch => {
-        dispatch(fetchItemsStart());
-        axios.get('/items.json')
-            .then(res => {
-                const fetchedItems = [];
-                for (let key in res.data) {
-                    fetchedItems.push({
-                        ...res.data[key],
-                    });
-                }
-                console.log("fetchItemsWithSort: ");
-                fetchedItems.sort(function (a, b) {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.date) - new Date(a.date);
-                });
-                console.log(fetchedItems);
-            })
-            .catch(err => {
-                dispatch(fetchItemsFail(err));
-            });
-    };
-
-};
-
-export const sortItems = (items) => {
-        items.sort(function (a, b) {
-            // Turn your strings into dates, and then subtract them
-            // to get a value that is either negative, positive, or zero.
-            return new Date(b.date) - new Date(a.date);
-        });
 };
 
 export const deleteItems = (id) => {
@@ -220,4 +223,31 @@ export const deleteItems = (id) => {
 
     };
 };
+
+export const editItemDBStart = () => {
+    return {
+        type: actionTypes.EDIT_START
+    };
+};
+
+export const editItems = (id, itemData) => {
+    return dispatch => {
+        dispatch(editItemDBStart());
+        axios.put('items/' + id + '.json', itemData)
+            .then(function (response) {
+                // handle success
+                console.log("Item with " + id + " edited. ");
+                console.log(itemData);
+                //dispatch(addItemDBSuccess(response.data.name, itemData));
+                dispatch(fetchItems());
+            })
+            .catch(err => {
+                //handle error
+                console.log("Error");
+                console.log(err);
+            });
+
+    };
+};
+
 
