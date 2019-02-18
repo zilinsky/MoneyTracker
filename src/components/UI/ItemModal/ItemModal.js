@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Slide from '@material-ui/core/Slide';
 import Icon from '@material-ui/core/Icon';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
 
 import { connect } from 'react-redux';
@@ -165,7 +166,9 @@ class ItemModal extends React.Component {
 
     return (
       <div>
-        <AddButton clicked={this.handleClickOpen}></AddButton>
+        <Tooltip disableFocusListener title="Add">
+          <AddButton clicked={this.handleClickOpen}/>
+        </Tooltip>
         <Dialog
           style={{ '--category--color': returnColorVar }}
           className={classes.dialog}

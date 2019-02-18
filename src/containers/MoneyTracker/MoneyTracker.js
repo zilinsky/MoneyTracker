@@ -4,6 +4,7 @@ import MonthsCalendar from '../MonthsCalendar/MonthsCalendar';
 import Items from '../../components/Items/Items';
 import ItemModal from '../../components/UI/ItemModal/ItemModal';
 import moment from 'moment';
+import Tooltip from '@material-ui/core/Tooltip';
 import * as actionCreators from '../../store/actions/index'
 import { connect } from 'react-redux';
 
@@ -21,7 +22,8 @@ class MoneyTracker extends Component {
         this.props.onFetchItems();
     }
 
-    editItem(id, item) {
+    editItem = (id, item) => {
+        console.log("editItem - clicked");
 
         this.props.onSetCurrItemAmount(item.amount);
         this.props.onSetCurrItemComment(item.comment);
@@ -32,7 +34,7 @@ class MoneyTracker extends Component {
         this.props.onSetCurrItemCategoryColor(item.color)
 
         this.props.onSetModalStatus(true, 'edit');
-    }
+    };
 
     getCurrentDateFromChild = (value) => {
         this.setState({ currentDate: value });
@@ -69,23 +71,25 @@ class MoneyTracker extends Component {
             items = (
                 <div>
                     {this.props.tms.map((item, index) => {
-                        return <div onClick={() => this.editItem(item.id, item)}
-                                    key={uniqid()}
+                        return <div key={uniqid()}
                                 >   {(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
                                     <div>
                                       { (arr.includes(index)) ? 
                                         <div className={classes.DatePanel}><p>{moment(item.date, 'YYYY-MM-DD').format("MMM DD YYYY")}</p><p>HUF {arr2[index]}</p></div> 
                                         : null}
-                                         
-                                        <Items
-                                            icon={item.category}
-                                            name={item.name}
-                                            comment={item.comment}
-                                            amount={item.amount.formattedValue}
-                                            date={item.date}
-                                          color={item.color}
-
-                                        />
+                                        <div onClick={() => this.editItem(item.id, item)}>
+                                        <Tooltip title="Edit">
+                                            <Items 
+                                                onClick={() => this.editItem(item.id, item)}
+                                                icon={item.category}
+                                                name={item.name}
+                                                comment={item.comment}
+                                                amount={item.amount.formattedValue}
+                                                date={item.date}
+                                                color={item.color}
+                                            /> 
+                                        </Tooltip>   
+                                        </div>
                                     </div>) : null}
                             </div>
                     })}
