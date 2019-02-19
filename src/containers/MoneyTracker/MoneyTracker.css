@@ -30,9 +30,16 @@ p {
 .DatePanel {
     display: flex;
     justify-content: space-between;
-    background-color: #F5F5F5;
+    background-color: #EEEEEE;
     text-align: left;
     padding-left: 10px;
     padding-right: 8px;
     font-size: 20px;
+}
+
+.DatePanelNumberFormat {
+    font-size: 0.8em;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
 }

@@ -4,7 +4,7 @@ body {
 
 .Header {
     height: 40px;
-    background-color: #3f51b5;
+    background-color: var(--default--color);
     margin: 0px;
 
 }

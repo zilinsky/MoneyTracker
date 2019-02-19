@@ -49,6 +49,27 @@
     margin-right: 18%;
 }
 
+.ButtonDiv {
+    background-color: var(--default--color);
+    text-align: center;
+    color: white;
+}
+
+.ButtonDiv Button {
+    font-weight: 400;
+    width: 100%;
+    color: white;
+}
+
+.ButtonDiv Button[class*="disabled"] {
+    color: white;
+    opacity: 0.2;
+}
+
+.ButtonDiv Button:hover {
+    background-color: #455A64;
+}
+
 @media (min-width: 320px) {
     .listWrapper {
         margin-left: -3%;

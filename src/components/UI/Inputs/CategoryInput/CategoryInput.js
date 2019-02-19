@@ -19,8 +19,8 @@ class CategoryInput extends React.Component {
         this.props.onSetCurrItemCategory(event.target.value);
         name = event.target.value;
         this.props.onSelectcolor(name);
-        this.props.onSetCurrItemCategoryName(this.props.categories[name].Name);
-        this.props.onSetCurrItemCategoryColor(this.props.categories[name].Color)
+        this.props.onSetCurrItemCategoryName(this.props.categories.expenses[name].Name);
+        this.props.onSetCurrItemCategoryColor(this.props.categories.expenses[name].Color)
     };
 
 

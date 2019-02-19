@@ -3,8 +3,9 @@ import classes from './MoneyTracker.css';
 import MonthsCalendar from '../MonthsCalendar/MonthsCalendar';
 import Items from '../../components/Items/Items';
 import ItemModal from '../../components/UI/ItemModal/ItemModal';
+import ExpensesPanel from '../../components/UI/ExpensesPanel/ExpensesPanel';
 import moment from 'moment';
-import Tooltip from '@material-ui/core/Tooltip';
+import NumberFormat from 'react-number-format';
 import * as actionCreators from '../../store/actions/index'
 import { connect } from 'react-redux';
 
@@ -47,12 +48,18 @@ class MoneyTracker extends Component {
         const arr2 = [];
         let temp;
         let a = 0;
+        let currentExpenses = 0;
 
         let items = <p>For this Month you don't have any items</p>
        
         if (this.props.tms !== 'undefined') {
             //DatePanel logic
             for (let i = 0; i < this.props.tms.length; ++i) {
+                if( (moment(this.props.tms[i].date, 'YYYY-MM-DD').month() === currentMonths) 
+                    && (moment(this.props.tms[i].date, 'YYYY-MM-DD').year() === currentYears)) {
+                        currentExpenses = this.props.tms[i].amount.floatValue + currentExpenses;
+                }
+
                 if (temp !== this.props.tms[i].date) {
                     arr.push(i);
                     a=0;
@@ -64,43 +71,52 @@ class MoneyTracker extends Component {
 
                 }
                 temp = this.props.tms[i].date;
+                console.log("switched");
             }
             console.log("arr: " + arr);
             console.log("arr2: " + arr2);
+            console.log("current month: " + currentMonths  + " Current expenses this month: " + currentExpenses);
 
             items = (
-                <div>
-                    {this.props.tms.map((item, index) => {
+                    this.props.tms.map((item, index) => {
                         return <div key={uniqid()}
                                 >   {(moment(item.date, 'YYYY-MM-DD').month() === currentMonths) && (moment(item.date, 'YYYY-MM-DD').year() === currentYears) ? (
                                     <div>
                                       { (arr.includes(index)) ? 
-                                        <div className={classes.DatePanel}><p>{moment(item.date, 'YYYY-MM-DD').format("MMM DD YYYY")}</p><p>HUF {arr2[index]}</p></div> 
+                                        <div className={classes.DatePanel}>
+                                            <p>{moment(item.date, 'YYYY-MM-DD').format("MMM DD YYYY")}</p>
+                                            <NumberFormat className={classes.DatePanelNumberFormat} value={arr2[index]} displayType={'text'} thousandSeparator={true} prefix={'HUF '} />
+                                        </div> 
                                         : null}
                                         <div onClick={() => this.editItem(item.id, item)}>
-                                        <Tooltip title="Edit">
                                             <Items 
-                                                onClick={() => this.editItem(item.id, item)}
+                                                /* onClick={() => this.editItem(item.id, item)} */
                                                 icon={item.category}
                                                 name={item.name}
                                                 comment={item.comment}
                                                 amount={item.amount.formattedValue}
                                                 date={item.date}
                                                 color={item.color}
-                                            /> 
-                                        </Tooltip>   
+                                            />   
                                         </div>
-                                    </div>) : null}
+                                    </div>) : null }
                             </div>
-                    })}
-                </div>
+                    })
+                
             );
         }
+        
+        console.log("items: ");
+        console.log(items);
+        /* console.log("this.props.tms: ");
+        console.log(this.props.tms); */
+
 
         return (
             <main className={classes.Main}>
                 <div className={classes.Content}>
                     <MonthsCalendar getCurrentDate={this.getCurrentDateFromChild} currentDate={this.state.currentDate} />
+                    <ExpensesPanel expenses={currentExpenses}/>
                     {items}
                     <ItemModal></ItemModal>
                 </div>

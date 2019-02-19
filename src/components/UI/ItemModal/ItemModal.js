@@ -19,9 +19,12 @@ import Icon from '@material-ui/core/Icon';
 import MenuItem from '@material-ui/core/MenuItem';
 import Tooltip from '@material-ui/core/Tooltip';
 import moment from 'moment';
+import * as imports from '../../../imports';
 
 import { connect } from 'react-redux';
 import * as actionCreators from '../../../store/actions/index';
+
+const defaultColor = imports.defaultColor;
 
 
 function Transition(props) {
@@ -35,8 +38,6 @@ class ItemModal extends React.Component {
     color: '',
     currencyType: "HUF "
   };
-
-
 
   componentDidMount() {
     //console.log("CategoryInput.js componentDidMount");
@@ -116,19 +117,22 @@ class ItemModal extends React.Component {
   render() {
 
     let categoriesVar;
-    let returnColorVar = '#3f51b5';
+    let returnColorVar = defaultColor;
     let isDisabled = true;
     let button;
     let deleteButton;
     const fetchedCategories = [];
 
     if (this.props.categories) {
-      for (let key in this.props.categories) {
+      for (let key in this.props.categories.expenses) {
         fetchedCategories.push({
-          ...this.props.categories[key],
+          ...this.props.categories.expenses[key],
           id: key
         });
       }
+
+      console.log("this.props.categories: ");
+      console.log(this.props.categories);
 
       categoriesVar = (fetchedCategories.map(cat => (
         <MenuItem key={cat.id} value={cat.id}>
@@ -146,7 +150,7 @@ class ItemModal extends React.Component {
     }
 
     if (typeof returnColorVar === 'undefined') {
-      returnColorVar = '#3f51b5'
+      returnColorVar = defaultColor;
     }
 
     if (this.props.currItemComment && this.props.currItemAmount.floatValue && this.props.currCategory && this.props.currItemDate) {
@@ -183,7 +187,6 @@ class ItemModal extends React.Component {
                   <CloseIcon />
                 </IconButton>
                 {deleteButton}
-                {button}
               </div>
               <div className={classes.amountInpWrapper}>
                 <AmountInput
@@ -199,6 +202,9 @@ class ItemModal extends React.Component {
               <DatePicker categoriesColor={returnColorVar}></DatePicker>
             </div>
           </List>
+          <div style={{ '--default--color': defaultColor }} className={classes.ButtonDiv}>
+            {button}
+          </div>  
           <Divider />
         </Dialog>
       </div>
